@@ -10,8 +10,7 @@ services:
       MYSQL_USER: "appUser"
       MYSQL_PASSWORD: "Squirre1"
     volumes:
-     - mysqlVolume:/var/lib/mysql
-  # phpmyadmin
+     - /data/mysql
   phpmyadmin:
     depends_on:
       - mysql
@@ -22,6 +21,16 @@ services:
     environment:
       PMA_HOST: mysql
       MYSQL_ROOT_PASSWORD: Squirre1
-volumes:
-  mysqlVolume:
-    driver: "local"
+  hotel-manager:
+    image: hotel-manager
+    environment:
+        SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/hotelManager?autoReconnect=true&useSSL=false
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - mysql
+    ports:
+      - 8080:8080
+    volumes:
+      - /data/hotel-manager

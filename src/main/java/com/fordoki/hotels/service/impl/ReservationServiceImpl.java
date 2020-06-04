@@ -27,7 +27,11 @@ public class ReservationServiceImpl implements ReservationService {
     // TODO implement filtering
     @Override
     public List<ReservationDto> getAllReservations(Date startDate, Date endDate) {
-        return mapper.toDtos(repository.getAllBetweenDates(startDate, endDate));
+        if (startDate != null && endDate != null) {
+            return mapper.toDtos(repository.getAllBetweenDates(startDate, endDate));
+        } else {
+            return mapper.toDtos(repository.findAll());
+        }
     }
 
     @Override
